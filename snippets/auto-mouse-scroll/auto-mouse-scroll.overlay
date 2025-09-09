@@ -5,10 +5,6 @@
 / {
     behaviors {
         // Toggle to scroll layer
-        scroll_toggle: scroll_toggle {
-            compatible = "zmk,behavior-toggle-layer";
-            #binding-cells = <1>;
-        };
     };
 
     // Multiple trackball listeners for different layers - this pattern works
