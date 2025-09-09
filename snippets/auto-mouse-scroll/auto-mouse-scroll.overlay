@@ -1,13 +1,12 @@
-// Basic scroll layer implementation for ZMK
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
-/ {
-    // Simple trackball listener for scroll layer
+/{
     trackball_scroll_listener: trackball_scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
         layers = <4>; // scroll_layer only
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
-    };
+        status = "okay";
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+     };
 };
