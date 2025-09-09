@@ -1,0 +1,45 @@
+// Basic implementation using standard ZMK patterns
+#include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h>
+
+/ {
+    // Simply use multiple input listeners for different layers and behaviors
+    
+    // Auto-mouse listener - same as default but triggers layer change
+    trackball_auto_mouse: trackball_auto_mouse {
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+        layers = <0 2 3>; // base, symbols, function layers
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+    };
+
+    // Mouse layer listener - normal mouse operation
+    trackball_mouse: trackball_mouse {
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+        layers = <1>; // auto_mouse_layer
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+    };
+
+    // Scroll layer listener - different transform for scrolling
+    trackball_scroll: trackball_scroll {
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+        layers = <4>; // scroll_layer
+        input-processors = <&zip_scroll_transform (INPUT_TRANSFORM_Y_INVERT)>;
+    };
+
+    // Custom scroll transform processor
+    zip_scroll_transform: zip_scroll_transform {
+        compatible = "zmk,input-processor-transform";
+        #input-processor-cells = <1>;
+        type = <INPUT_TRANSFORM_Y_TO_WHEEL>;
+        scale-multiplier = <1>;
+        scale-divisor = <3>; // Adjust for smooth scrolling
+    };
+};
+
+// Disable the original trackball listener to prevent conflicts
+&trackball_listener {
+    status = "disabled";
+};
