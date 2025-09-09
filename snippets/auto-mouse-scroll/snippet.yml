@@ -1,0 +1,3 @@
+name: auto-mouse-scroll
+append:
+  EXTRA_DTC_OVERLAY_FILE: auto-mouse-scroll.overlay
