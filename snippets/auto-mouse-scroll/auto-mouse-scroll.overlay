@@ -1,44 +1,13 @@
-// Auto-mouse and scroll implementation using verified ZMK patterns
+// Basic scroll layer implementation for ZMK
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
 / {
-    behaviors {
-        // Toggle to scroll layer
-    };
-
-    // Multiple trackball listeners for different layers - this pattern works
-    trackball_base_listener: trackball_base_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-        layers = <0 2 3>; // base, symbols, function layers
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
-    };
-
-    trackball_mouse_listener: trackball_mouse_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-        layers = <1>; // auto_mouse_layer
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
-    };
-
+    // Simple trackball listener for scroll layer
     trackball_scroll_listener: trackball_scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        layers = <4>; // scroll_layer
-        input-processors = <&scroll_transform (INPUT_TRANSFORM_Y_INVERT)>;
+        layers = <4>; // scroll_layer only
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
     };
-
-    // Custom scroll transform - attempt to convert Y to scroll wheel
-    scroll_transform: scroll_transform {
-        compatible = "zmk,input-processor-transform";
-        #input-processor-cells = <1>;
-        y-to-wheel-scroll-multiplier = <1>;
-        y-to-wheel-scroll-divisor = <4>;
-    };
-};
-
-// Disable default to prevent conflicts
-&trackball_listener {
-    status = "disabled";
 };
